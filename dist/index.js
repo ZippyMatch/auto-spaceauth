@@ -26,7 +26,7 @@ module.exports = function() {
     cli.stdout.on('data', (buf) => {
         const str = buf.toString();
         // if (!str.includes('FASTLANE_SESSION')) {
-        console.log('OUT >>>>>>>>>>>>>>>>>>>>>', data.toString(), '<<<<<<<<<<<<<<<');
+        console.log('OUT >>>>>>>>>>>>>>>>>>>>>', str, '<<<<<<<<<<<<<<<');
         // }
     });
     cli.stderr.on('data', (data) => {
