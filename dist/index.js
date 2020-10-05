@@ -5,11 +5,14 @@ require('./sourcemap-register.js');module.exports =
 /***/ 2333:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+const core = __webpack_require__(2186);
 const cp = __webpack_require__(3129);
+const path = __webpack_require__(5622);
 
 module.exports = function() {
     // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
-    const cli = cp.spawn('script', ['-r', '-q', ])
+    const outPath = path.join(process.cwd(), 'fastlane-out');
+    const cli = cp.spawn('script', ['-r', '-q', outPath, `fastlane spaceauth -u ${core.getInput('apple_id')}`])
 
     cli.stdout.pipe(process.stdout, { end: false });
     cli.stderr.pipe(process.stderr, { end: false });

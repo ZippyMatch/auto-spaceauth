@@ -1,8 +1,11 @@
+const core = require('@actions/core');
 const cp = require('child_process');
+const path = require('path');
 
 module.exports = function() {
     // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
-    const cli = cp.spawn('script', ['-r', '-q', ])
+    const outPath = path.join(process.cwd(), 'fastlane-out');
+    const cli = cp.spawn('script', ['-r', '-q', outPath, `fastlane spaceauth -u ${core.getInput('apple_id')}`])
 
     cli.stdout.pipe(process.stdout, { end: false });
     cli.stderr.pipe(process.stderr, { end: false });
