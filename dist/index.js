@@ -20,11 +20,14 @@ module.exports = function() {
         }
     });
 
-    cli.stdout.pipe(process.stdout, { end: false });
-    cli.stderr.pipe(process.stderr, { end: false });
+    // cli.stdout.pipe(process.stdout, { end: false });
+    // cli.stderr.pipe(process.stderr, { end: false });
 
-    cli.stdout.on('data', (data) => {
-        console.log('OUT', data.toString());
+    cli.stdout.on('data', (buf) => {
+        const str = buf.toString();
+        // if (!str.includes('FASTLANE_SESSION')) {
+        console.log('OUT >>>>>>>>>>>>>>>>>>>>>', data.toString(), '<<<<<<<<<<<<<<<');
+        // }
     });
     cli.stderr.on('data', (data) => {
         console.log('ERR: ', data.toString());
