@@ -8,10 +8,10 @@ module.exports = function() {
     cli.stderr.pipe(process.stderr, { end: false });
 
     cli.stdout.on('data', (data) => {
-        console.log('OUT', data);
+        console.log('OUT', data.toString());
     });
     cli.stderr.on('data', (data) => {
-        console.log('ERR: ', data);
+        console.log('ERR: ', data.toString());
     })
 
     return cli;
