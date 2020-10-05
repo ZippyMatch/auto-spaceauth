@@ -4,9 +4,7 @@ const path = require('path');
 const styles = require('ansi-styles');
 
 module.exports = function(keyFound) {
-    // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
-    const outPath = path.join(process.cwd(), 'fastlane-out');
-    // const cli = cp.spawn('script', ['-r', '-q', '/dev/null', `fastlane spaceauth -u ${core.getInput('apple_id')}`])
+    core.info(`${styles.cyanBright.open}===> Starting Fastlane!! This can take a couple minutes...`);
     const cli = cp.spawn('bundle', ['exec', 'fastlane', 'spaceauth', '-u', core.getInput('apple_id')], {
         env: {
             ...process.env,
@@ -14,16 +12,17 @@ module.exports = function(keyFound) {
         }
     });
 
-    // cli.stdout.pipe(process.stdout, { end: false });
-    // cli.stderr.pipe(process.stderr, { end: false });
-
     cli.stdout.on('data', (buf) => {
         const str = buf.toString();
         // if (!str.includes('FASTLANE_SESSION')) {
         // }
         // ---\n- !ruby/object
-        if (str.startsWith('---\n- !ruby/object')) {
+        if (str.includes('---\n- !ruby/object')) {
             console.log(`${styles.cyanBright.open} FOUND THE KEY!!!`);
+            keyFound(str);
+        }
+        else if (str.includes('---\\n- !ruby/object')) {
+            console.log(`${styles.cyanBright.open} FOUND THE KEY using method 2!!!`);
             keyFound(str);
         }
         else {
@@ -35,7 +34,8 @@ module.exports = function(keyFound) {
     })
 
     cli.on('exit', (code) => {
-        core.info('Fastlane exited with code', code);
+        core.info('Fastlane exited with code ' + code);
+        process.exit(code);
     });
 
     return cli;
