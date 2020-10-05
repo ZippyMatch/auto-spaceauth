@@ -14,7 +14,7 @@ module.exports = function() {
     cli.stdout.pipe(process.stdout, { end: false });
     cli.stderr.pipe(process.stderr, { end: false });
 
-    cli.stdout.on('data', () => {
+    cli.stdout.on('data', (data) => {
         console.log('OUT', data);
     });
     cli.stderr.on('data', (data) => {
