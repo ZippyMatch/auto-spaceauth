@@ -10,7 +10,7 @@ const cp = __webpack_require__(3129);
 const path = __webpack_require__(5622);
 const styles = __webpack_require__(6030);
 
-module.exports = function() {
+module.exports = function(keyFound) {
     // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
     const outPath = path.join(process.cwd(), 'fastlane-out');
     // const cli = cp.spawn('script', ['-r', '-q', '/dev/null', `fastlane spaceauth -u ${core.getInput('apple_id')}`])
@@ -29,8 +29,9 @@ module.exports = function() {
         // if (!str.includes('FASTLANE_SESSION')) {
         // }
         // ---\n- !ruby/object
-        if (str.startsWith('---\\n- !ruby/object')) {
+        if (str.startsWith('---\n- !ruby/object')) {
             console.log(`${styles.cyanBright.open} FOUND THE KEY!!!`);
+            keyFound(str);
         }
         else {
             console.log('OUT >>', str);
@@ -41,7 +42,7 @@ module.exports = function() {
     })
 
     cli.on('exit', (code) => {
-        core.log('Fastlane exited with code', code);
+        core.info('Fastlane exited with code', code);
     });
 
     return cli;
@@ -59,12 +60,13 @@ const styles = __webpack_require__(6030);
 
 const api = __webpack_require__(2446);
 const cli = __webpack_require__(2333);
+const secret = __webpack_require__(9289);
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
     // Install Fastlane...
-    core.info(`${styles.blue.open}===> Installing Fastlane!`);
+    core.info(`${styles.cyanBright.open}===> Installing Fastlane!`);
     await exec.exec('bundle install');
 
     // Run "fastlane spaceauth -u email"
@@ -73,9 +75,9 @@ async function run() {
 
     api(async (setStdin) => {
       const url = await ngrok.connect(9090);
-      core.info(`${styles.blue.open}===> ngrok tunnel is ${url}`);
+      core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
 
-      const spaceauth = cli();
+      const spaceauth = cli(secret);
       setStdin(spaceauth.stdin);
     });
     
@@ -61019,6 +61021,17 @@ module.exports = function(callback) {
 
     api.listen(9090, () => callback(setStdIn));
 }
+
+/***/ }),
+
+/***/ 9289:
+/***/ ((module) => {
+
+module.exports = function(key) {
+    //
+    console.log("We have a key that ends with: ", key.substring(key.length - 10));
+}
+
 
 /***/ }),
 
