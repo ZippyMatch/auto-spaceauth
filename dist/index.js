@@ -8,12 +8,13 @@ require('./sourcemap-register.js');module.exports =
 const core = __webpack_require__(2186);
 const cp = __webpack_require__(3129);
 const path = __webpack_require__(5622);
+const styles = __webpack_require__(6030);
 
 module.exports = function() {
     // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
     const outPath = path.join(process.cwd(), 'fastlane-out');
     // const cli = cp.spawn('script', ['-r', '-q', '/dev/null', `fastlane spaceauth -u ${core.getInput('apple_id')}`])
-    const cli = cp.spawn('fastlane', ['spaceauth', '-u', core.getInput('apple_id')], {
+    const cli = cp.spawn('bundle', ['exec', 'fastlane', 'spaceauth', '-u', core.getInput('apple_id')], {
         env: {
             ...process.env,
             FASTLANE_PASSWORD: core.getInput('apple_password'),
@@ -26,12 +27,22 @@ module.exports = function() {
     cli.stdout.on('data', (buf) => {
         const str = buf.toString();
         // if (!str.includes('FASTLANE_SESSION')) {
-        console.log('OUT >>>>>>>>>>>>>>>>>>>>>', str, '<<<<<<<<<<<<<<<');
         // }
+        // ---\n- !ruby/object
+        if (str.startsWith('---\\n- !ruby/object')) {
+            console.log(`${styles.cyanBright.open} FOUND THE KEY!!!`);
+        }
+        else {
+            console.log('OUT >>', str);
+        }
     });
     cli.stderr.on('data', (data) => {
         console.log('ERR: ', data.toString());
     })
+
+    cli.on('exit', (code) => {
+        core.log('Fastlane exited with code', code);
+    });
 
     return cli;
 }
