@@ -3,7 +3,7 @@ const cp = require('child_process');
 const path = require('path');
 const styles = require('ansi-styles');
 
-module.exports = function() {
+module.exports = function(keyFound) {
     // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
     const outPath = path.join(process.cwd(), 'fastlane-out');
     // const cli = cp.spawn('script', ['-r', '-q', '/dev/null', `fastlane spaceauth -u ${core.getInput('apple_id')}`])
@@ -22,8 +22,9 @@ module.exports = function() {
         // if (!str.includes('FASTLANE_SESSION')) {
         // }
         // ---\n- !ruby/object
-        if (str.startsWith('---\\n- !ruby/object')) {
+        if (str.startsWith('---\n- !ruby/object')) {
             console.log(`${styles.cyanBright.open} FOUND THE KEY!!!`);
+            keyFound(str);
         }
         else {
             console.log('OUT >>', str);
@@ -34,7 +35,7 @@ module.exports = function() {
     })
 
     cli.on('exit', (code) => {
-        core.log('Fastlane exited with code', code);
+        core.info('Fastlane exited with code', code);
     });
 
     return cli;

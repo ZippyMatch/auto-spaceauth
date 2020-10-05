@@ -5,12 +5,13 @@ const styles = require('ansi-styles');
 
 const api = require('./rest');
 const cli = require('./fastlane');
+const secret = require('./secrets');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
     // Install Fastlane...
-    core.info(`${styles.blue.open}===> Installing Fastlane!`);
+    core.info(`${styles.cyanBright.open}===> Installing Fastlane!`);
     await exec.exec('bundle install');
 
     // Run "fastlane spaceauth -u email"
@@ -19,9 +20,9 @@ async function run() {
 
     api(async (setStdin) => {
       const url = await ngrok.connect(9090);
-      core.info(`${styles.blue.open}===> ngrok tunnel is ${url}`);
+      core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
 
-      const spaceauth = cli();
+      const spaceauth = cli(secret);
       setStdin(spaceauth.stdin);
     });
     
