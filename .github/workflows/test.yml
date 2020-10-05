@@ -24,3 +24,4 @@ jobs:
       with:
         milliseconds: 1000
         apple_id: ${{ secrets.APPLE_ID }}
+        apple_password: ${{ secrets.APPLE_PASSWORD }}
