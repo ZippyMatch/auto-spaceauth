@@ -1,9 +1,12 @@
 name: 'Wait'
 description: 'Wait a designated number of milliseconds'
 inputs:
+  apple_id:
+    description: 'The Apple ID you will log in with'
+    required: true
   milliseconds:  # id of input
     description: 'number of milliseconds to wait'
-    required: true
+    required: false
     default: '1000'
 outputs:
   time: # output will be available to future steps

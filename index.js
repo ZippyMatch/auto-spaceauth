@@ -12,7 +12,15 @@ async function run() {
     // core.info((new Date()).toTimeString());
 
     // core.setOutput('time', new Date().toTimeString());
-    exec.exec('bundle install');
+
+    // Install Fastlane...
+    await exec.exec('bundle install');
+
+    // Run "fastlane spaceauth -u email"
+    const fastlane = `fastlane spaceauth -u ${core.getInput('apple_id')}`;
+    console.log(fastlane);
+
+    // await exec.exec('fastlane', ['spaceauth', '-u', core.getInput('apple_id')]);
     
   } catch (error) {
     core.setFailed(error.message);

@@ -26,7 +26,8 @@
   "homepage": "https://github.com/ZippyMatch/auto-spaceship#readme",
   "dependencies": {
     "@actions/core": "^1.2.5",
-    "@actions/exec": "^1.0.4"
+    "@actions/exec": "^1.0.4",
+    "ngrok": "^3.3.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.24.0",
