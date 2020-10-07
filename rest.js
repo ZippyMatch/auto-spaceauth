@@ -1,6 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+/**
+ * Start the API to receive our 2FA code from Apple via ngrok tunnel.
+ * 
+ * @param {apiCallback} callback 
+ */
 module.exports = function(callback) {
     const api = express();
     let stdIn = undefined;
@@ -32,6 +37,11 @@ module.exports = function(callback) {
         }
     });
 
+    /**
+     * Set the standard in this API will use when data is received.
+     * 
+     * @param {internal.Writable} stdin A pipe to write to
+     */
     const setStdIn = (stdin) => {
         stdIn = stdin;
     }
@@ -40,3 +50,22 @@ module.exports = function(callback) {
         server.close();
     }));
 }
+
+/**
+ * This callback is displayed as a global member.
+ * 
+ * @callback apiCallback
+ * @param {setStdIn} setStdIn A method which will set our stand
+ * @param {onDone} onDone A method which, when called, will close this API.
+ */
+
+ /**
+  * Set the stdin that the API will write to when it receives a code.
+  * @callback setStdIn
+  * @param {internal.Writable} stdin The stdin pipe to write to when a code is received.
+  */
+
+  /**
+   * Method to call when API needs to be torn down.
+   * @callback onDone
+   */

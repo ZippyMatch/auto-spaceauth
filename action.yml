@@ -13,6 +13,12 @@ inputs:
   github_pat:
     description: 'Github personal access token (for setting the secret)'
     required: true
+  org_secret_name:
+    description: 'The name of the org secret you want to set'
+    required: false
+  repo_secret_name:
+    description: 'The name of the repo secret you want to set'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
