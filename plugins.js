@@ -33,27 +33,6 @@ async function installPlugins(pluginNames) {
     else {
         throw Error(`npm exited with code ${results}`);
     }
-
-    // return new Promise((resolve, reject) => {
-        // Install the plug-ins...
-        // const npm = cp.spawn('npm', ['install', ...pluginNames], { stdio: 'pipe', cwd: path.join(__dirname, '..') });
-        // npm.stdout.pipe(process.stdout, { end: false });
-        // npm.stderr.pipe(process.stdout, { end: false });
-
-        
-
-        // const onExit = (code) => {
-        //     console.log('npm exited with code', code);
-        //     if (code == 0) {
-        //         resolve();
-        //     }
-        //     else {
-        //         reject();
-        //     }
-        // };
-
-        // npm.on('close', onExit);
-    // });
 }
 
 async function handlePlugins(url) {

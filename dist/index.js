@@ -35,7 +35,7 @@ module.exports = function(keyFound) {
         if (match) {
             keyFound(match[0]);
             // Remove our listener!
-            core.info(`${styles.blueBright.open}===> Removing our stdout listener...`);
+            core.info(`${styles.cyanBright.open}===> Found a key! Removing our stdout listener...`);
             cli.stdout.removeListener('data', onData);
         }
         else {
@@ -49,7 +49,7 @@ module.exports = function(keyFound) {
     })
 
     cli.on('exit', (code) => {
-        core.info(`${styles.blueBright.open}===> Fastlane exited with code ${code}`);
+        core.info(`${styles.cyanBright.open}===> Fastlane exited with code ${code}`);
     });
 
     return cli;
@@ -69534,27 +69534,6 @@ async function installPlugins(pluginNames) {
     else {
         throw Error(`npm exited with code ${results}`);
     }
-
-    // return new Promise((resolve, reject) => {
-        // Install the plug-ins...
-        // const npm = cp.spawn('npm', ['install', ...pluginNames], { stdio: 'pipe', cwd: path.join(__dirname, '..') });
-        // npm.stdout.pipe(process.stdout, { end: false });
-        // npm.stderr.pipe(process.stdout, { end: false });
-
-        
-
-        // const onExit = (code) => {
-        //     console.log('npm exited with code', code);
-        //     if (code == 0) {
-        //         resolve();
-        //     }
-        //     else {
-        //         reject();
-        //     }
-        // };
-
-        // npm.on('close', onExit);
-    // });
 }
 
 async function handlePlugins(url) {
@@ -69673,7 +69652,7 @@ module.exports = async function(key) {
     const octokit = github.getOctokit(secret);
     const { context } = github;
 
-    core.info(`${styles.blueBright.open}===> Getting repository public key...`);
+    core.info(`${styles.cyanBright.open}===> Getting repository public key...`);
 
     const { data: publicKey } = await octokit.actions.getRepoPublicKey(context.repo);
 
@@ -69690,7 +69669,7 @@ module.exports = async function(key) {
         key_id: publicKey.key_id,
     });
 
-    core.info(`${styles.blueBright.open}===> Created repository secret!`);
+    core.info(`${styles.green.open}===> Created repository secret!`);
 }
 
 

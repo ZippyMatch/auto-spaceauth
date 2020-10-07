@@ -18,7 +18,7 @@ module.exports = async function(key) {
     const octokit = github.getOctokit(secret);
     const { context } = github;
 
-    core.info(`${styles.blueBright.open}===> Getting repository public key...`);
+    core.info(`${styles.cyanBright.open}===> Getting repository public key...`);
 
     const { data: publicKey } = await octokit.actions.getRepoPublicKey(context.repo);
 
@@ -35,5 +35,5 @@ module.exports = async function(key) {
         key_id: publicKey.key_id,
     });
 
-    core.info(`${styles.blueBright.open}===> Created repository secret!`);
+    core.info(`${styles.green.open}===> Created repository secret!`);
 }

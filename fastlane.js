@@ -20,7 +20,7 @@ module.exports = function(keyFound) {
         if (match) {
             keyFound(match[0]);
             // Remove our listener!
-            core.info(`${styles.blueBright.open}===> Removing our stdout listener...`);
+            core.info(`${styles.cyanBright.open}===> Found a key! Removing our stdout listener...`);
             cli.stdout.removeListener('data', onData);
         }
         else {
@@ -34,7 +34,7 @@ module.exports = function(keyFound) {
     })
 
     cli.on('exit', (code) => {
-        core.info(`${styles.blueBright.open}===> Fastlane exited with code ${code}`);
+        core.info(`${styles.cyanBright.open}===> Fastlane exited with code ${code}`);
     });
 
     return cli;
