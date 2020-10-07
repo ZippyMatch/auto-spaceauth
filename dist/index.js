@@ -69680,7 +69680,7 @@ async function setOrgSecret(pat, secret_name, key) {
     core.info(`${styles.cyanBright.open}===> Getting organization public key...`);
 
     const { data: { key_id, key: publicKey } } = await octokit.actions.getOrgPublicKey({
-        owner: context.repo.owner,
+        org: context.repo.owner,
     });
 
     const secretBytes = Buffer.from(key);
@@ -69690,7 +69690,7 @@ async function setOrgSecret(pat, secret_name, key) {
     const encrypted_value = Buffer.from(encryptedBytes).toString('base64');
 
     await octokit.actions.createOrUpdateOrgSecret({
-        owner: context.repo.owner,
+        org: context.repo.owner,
         secret_name,
         encrypted_value,
         key_id,
