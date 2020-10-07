@@ -1,7 +1,7 @@
-const wait = require('./wait');
-const process = require('process');
-const cp = require('child_process');
-const path = require('path');
+// const wait = require('./wait');
+// const process = require('process');
+// const cp = require('child_process');
+// const path = require('path');
 
 // test('throws invalid number', async () => {
 //   await expect(wait('foo')).rejects.toThrow('milliseconds not a number');
@@ -22,6 +22,6 @@ const path = require('path');
 //   console.log(cp.execSync(`node ${ip}`, {env: process.env}).toString());
 // })
 
-test('1', () => {
+test('test 1 == 1', () => {
   expect(1).toEqual(1);
 });

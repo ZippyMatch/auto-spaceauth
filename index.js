@@ -15,10 +15,6 @@ async function run() {
     core.info(`${styles.cyanBright.open}===> Installing Fastlane!`);
     await exec.exec('bundle install');
 
-    // Run "fastlane spaceauth -u email"
-    const fastlane = `fastlane spaceauth -u ${core.getInput('apple_id')}`;
-    console.log(fastlane);
-
     api(async (setStdin, stopListening) => {
       const url = await ngrok.connect(9090);
       core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
@@ -31,8 +27,15 @@ async function run() {
         process.exit(1);
       }
 
-      const spaceauth = cli((key) => {
+      const spaceauth = cli(async (key) => {
+        // Turn off our HTTP services...
+        core.info(`${styles.cyanBright.open}===> Killing our ngrok tunnel`);
         stopListening();
+        await ngrok.disconnect();
+        await ngrok.kill();
+
+        // Send our secret to GitHub...
+        // TODO: also make this plug-innable
         secret(key);
       });
       setStdin(spaceauth.stdin);
