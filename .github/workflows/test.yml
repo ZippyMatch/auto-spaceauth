@@ -25,7 +25,7 @@ jobs:
         apple_id: ${{ secrets.APPLE_ID }}
         apple_password: ${{ secrets.APPLE_PASSWORD }}
         tfa_phone_number: ${{ secrets.PHONE_NUMBER }}
-        github_secret: ${{ secrets.GITHUB_SECRET }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       env:
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
