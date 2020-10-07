@@ -25,8 +25,8 @@ jobs:
         apple_id: ${{ secrets.APPLE_ID }}
         apple_password: ${{ secrets.APPLE_PASSWORD }}
         tfa_phone_number: ${{ secrets.PHONE_NUMBER }}
+        github_secret: ${{ secrets.GITHUB_SECRET }}
       env:
-        SPACESHIP_2FA_SMS_DEFAULT_PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
         TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
         TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
         TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}

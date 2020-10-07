@@ -10,6 +10,7 @@ module.exports = function(keyFound) {
         env: {
             ...process.env,
             FASTLANE_PASSWORD: core.getInput('apple_password'),
+            SPACESHIP_2FA_SMS_DEFAULT_PHONE_NUMBER: core.getInput('tfa_phone_number'),
         }
     });
 
