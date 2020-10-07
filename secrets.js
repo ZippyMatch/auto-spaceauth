@@ -14,6 +14,8 @@ async function setOrgSecret(pat, secret_name, key) {
     const { context, getOctokit } = github;
     const octokit = getOctokit(pat);
 
+    core.info(`${styles.cyanBright.open}===> Getting organization public key...`);
+
     const { data: { key_id, key: publicKey } } = await octokit.actions.getOrgPublicKey({
         owner: context.repo.owner,
     });
@@ -29,7 +31,9 @@ async function setOrgSecret(pat, secret_name, key) {
         secret_name,
         encrypted_value,
         key_id,
-    })
+    });
+
+    core.info(`${styles.green.open}===> Created org secret!`);
 }
 
 /**
