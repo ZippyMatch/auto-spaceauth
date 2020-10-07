@@ -6,6 +6,7 @@ const styles = require('ansi-styles');
 const api = require('./rest');
 const cli = require('./fastlane');
 const secret = require('./secrets');
+const plugins = require('./plugins');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -21,6 +22,8 @@ async function run() {
     api(async (setStdin) => {
       const url = await ngrok.connect(9090);
       core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
+
+      await plugins(url);
 
       const spaceauth = cli(secret);
       setStdin(spaceauth.stdin);

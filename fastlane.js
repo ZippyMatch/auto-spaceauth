@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const cp = require('child_process');
-const path = require('path');
 const styles = require('ansi-styles');
 
 const re = /---\\n- !.*/g;
