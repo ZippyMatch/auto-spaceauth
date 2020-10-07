@@ -8,7 +8,7 @@ module.exports = async function(key) {
     console.log("We have a key that starts with: ", key.substring(0, 10));
     console.log("We have a key that ends with: ", key.substring(key.length - 10));
 
-    const secret = core.getInput('github_token');
+    const secret = core.getInput('github_pat');
 
     if (!secret) {
         core.warning(`${styles.yellow.open} WARNING: No Github Token provided. Skipping setting your secret...`);

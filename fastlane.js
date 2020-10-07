@@ -14,22 +14,27 @@ module.exports = function(keyFound) {
         }
     });
 
-    cli.stdout.on('data', (buf) => {
+    const onData = (buf) => {
         const str = buf.toString();
         const match = re.exec(str);
         if (match) {
             keyFound(match[0]);
+            // Remove our listener!
+            core.info(`${styles.blueBright.open}===> Removing our stdout listener...`);
+            cli.stdout.removeListener('data', onData);
         }
         else {
             console.log('OUT >>', str);
         }
-    });
+    };
+
+    cli.stdout.on('data', onData);
     cli.stderr.on('data', (data) => {
         console.log('ERR: ', data.toString());
     })
 
     cli.on('exit', (code) => {
-        core.info('Fastlane exited with code ' + code);
+        core.info(`${styles.blueBright.open}===> Fastlane exited with code ${code}`);
     });
 
     return cli;

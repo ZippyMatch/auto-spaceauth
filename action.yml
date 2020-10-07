@@ -10,8 +10,8 @@ inputs:
   tfa_phone_number:
     description: 'Phone number for two-factor auth'
     required: true
-  github_token:
-    description: 'Github secret token (for setting the secret)'
+  github_pat:
+    description: 'Github personal access token (for setting the secret)'
     required: true
 runs:
   using: 'node12'
