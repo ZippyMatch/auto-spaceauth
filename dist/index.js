@@ -69673,9 +69673,13 @@ module.exports = async function(key) {
     core.info(`${styles.blueBright.open}===> Getting repository public key...`);
 
     const { data: publicKey } = await octokit.actions.getRepoPublicKey(context.repo);
+    console.log('Public key:');
+    console.log(publicKey);
 
     const secretBytes = Buffer.from(key);
     const keyBytes = Buffer.from(publicKey, 'base64');
+    console.log('Key bytes');
+    console.log(keyBytes);
 
     const encryptedBytes = sodium.seal(secretBytes, keyBytes);
 
