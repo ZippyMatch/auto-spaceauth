@@ -2,12 +2,19 @@ require('./sourcemap-register.js');module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 8318:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse("[{\"name\":\"@expo-apple-2fa/twilio\",\"async\":false}]");
+
+/***/ }),
+
 /***/ 2333:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const core = __webpack_require__(2186);
 const cp = __webpack_require__(3129);
-const path = __webpack_require__(5622);
 const styles = __webpack_require__(6030);
 
 const re = /---\\n- !.*/g;
@@ -56,6 +63,7 @@ const styles = __webpack_require__(6030);
 const api = __webpack_require__(2446);
 const cli = __webpack_require__(2333);
 const secret = __webpack_require__(9289);
+const plugins = __webpack_require__(266);
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -71,6 +79,8 @@ async function run() {
     api(async (setStdin) => {
       const url = await ngrok.connect(9090);
       core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
+
+      await plugins(url);
 
       const spaceauth = cli(secret);
       setStdin(spaceauth.stdin);
@@ -60969,6 +60979,112 @@ WError.prototype.cause = function we_cause(c)
 
 	return (this.jse_cause);
 };
+
+
+/***/ }),
+
+/***/ 266:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const fs = __webpack_require__(5747);
+const path = __webpack_require__(5622);
+const styles = __webpack_require__(6030);
+const exec = __webpack_require__(1514);
+
+/***********************************************
+ * Plug-ins!!
+ * 
+ * The 2fa.config.json format will be...
+ * 
+ * [
+ *  {
+ *    "name": "@expo-apple-2fa/google-cloud",
+ *    "async": false,
+ *    "config": {}
+ *  }
+ * ]
+ * 
+ * Plug-ins must be a standard npm module, with
+ * a default export, that accept the url as an
+ * argument, and return a Promise.
+ * 
+ */
+
+async function installPlugins(pluginNames) {
+    const results = await exec.exec('npm', ['install', ...pluginNames], {
+        cwd: path.join(__dirname, '..'),
+    });
+
+    if (results == 0) {
+        return;
+    }
+    else {
+        throw Error(`npm exited with code ${results}`);
+    }
+
+    // return new Promise((resolve, reject) => {
+        // Install the plug-ins...
+        // const npm = cp.spawn('npm', ['install', ...pluginNames], { stdio: 'pipe', cwd: path.join(__dirname, '..') });
+        // npm.stdout.pipe(process.stdout, { end: false });
+        // npm.stderr.pipe(process.stdout, { end: false });
+
+        
+
+        // const onExit = (code) => {
+        //     console.log('npm exited with code', code);
+        //     if (code == 0) {
+        //         resolve();
+        //     }
+        //     else {
+        //         reject();
+        //     }
+        // };
+
+        // npm.on('close', onExit);
+    // });
+}
+
+async function handlePlugins(url) {
+    // First, load the plugins, if any
+    const configPath = __webpack_require__.ab + "2fa.config.json";
+    const exists = fs.existsSync(__webpack_require__.ab + "2fa.config.json");
+    if (!exists) {
+        console.log(`${styles.greenBright.open}===> Did not find any plug-ins to run`);
+        return;
+    }
+
+    // Load our configuration
+    const pluginConfig = __webpack_require__(8318);
+
+    // First, install our plug-ins...
+    console.log(`${styles.greenBright.open}===> Installing plug-ins...`);
+    const pluginNames = pluginConfig.map(pn => pn.name);
+    await installPlugins(pluginNames);
+
+    // Now, load/run our plug-ins!
+    console.log(`${styles.greenBright.open}===> Running plug-ins...`);
+
+    let syncPlugins = [];
+    pluginConfig.forEach(pn => {
+        const plugin = require(pn.name);
+        if ('async' in pn) {
+            if (pn.async) {
+                plugin(url);
+            }
+            else {
+                syncPlugins.push(plugin(url));
+            }
+        }
+        else {
+            // If no async defined, assume it's synchronous
+            syncPlugins.push(plugin(url));
+        }
+    });
+
+    // Trigger our async plugins, and wait for our sync plugins
+    await Promise.all(syncPlugins);
+}
+module.exports = handlePlugins;
 
 
 /***/ }),
