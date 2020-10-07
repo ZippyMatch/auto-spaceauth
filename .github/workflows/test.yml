@@ -24,3 +24,5 @@ jobs:
       with:
         apple_id: ${{ secrets.APPLE_ID }}
         apple_password: ${{ secrets.APPLE_PASSWORD }}
+      env:
+        SPACESHIP_2FA_SMS_DEFAULT_PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
