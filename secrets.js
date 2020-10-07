@@ -31,6 +31,7 @@ async function setOrgSecret(pat, secret_name, key) {
         secret_name,
         encrypted_value,
         key_id,
+        visibility: 'all',
     });
 
     core.info(`${styles.green.open}===> Created org secret!`);
