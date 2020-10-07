@@ -69673,13 +69673,9 @@ module.exports = async function(key) {
     core.info(`${styles.blueBright.open}===> Getting repository public key...`);
 
     const { data: publicKey } = await octokit.actions.getRepoPublicKey(context.repo);
-    console.log('Public key:');
-    console.log(publicKey);
 
     const secretBytes = Buffer.from(key);
-    const keyBytes = Buffer.from(publicKey, 'base64');
-    console.log('Key bytes');
-    console.log(keyBytes);
+    const keyBytes = Buffer.from(publicKey.key, 'base64');
 
     const encryptedBytes = sodium.seal(secretBytes, keyBytes);
 
@@ -69687,6 +69683,7 @@ module.exports = async function(key) {
         ...context.repo,
         secret_name: 'FASTLANE_SESSION',
         encrypted_value: encryptedBytes,
+        key_id: publicKey.key_id,
     });
 
     core.info(`${styles.blueBright.open}===> Created repository secret!`);
