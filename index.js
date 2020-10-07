@@ -23,7 +23,13 @@ async function run() {
       const url = await ngrok.connect(9090);
       core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
 
-      await plugins(url);
+      try {
+        await plugins(url);
+      }
+      catch (exc) {
+        core.setFailed(exc);
+        process.exit(1);
+      }
 
       const spaceauth = cli(secret);
       setStdin(spaceauth.stdin);
