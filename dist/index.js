@@ -69678,11 +69678,12 @@ module.exports = async function(key) {
     const keyBytes = Buffer.from(publicKey.key, 'base64');
 
     const encryptedBytes = sodium.seal(secretBytes, keyBytes);
+    const encrypted_value = Buffer.from(encryptedBytes).toString('base64');
 
     await octokit.actions.createOrUpdateRepoSecret({
         ...context.repo,
         secret_name: 'FASTLANE_SESSION',
-        encrypted_value: encryptedBytes,
+        encrypted_value,
         key_id: publicKey.key_id,
     });
 
