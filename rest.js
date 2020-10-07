@@ -36,5 +36,7 @@ module.exports = function(callback) {
         stdIn = stdin;
     }
 
-    api.listen(9090, () => callback(setStdIn));
+    const server = api.listen(9090, () => callback(setStdIn, () => {
+        server.close();
+    }));
 }

@@ -30,7 +30,6 @@ module.exports = function(keyFound) {
 
     cli.on('exit', (code) => {
         core.info('Fastlane exited with code ' + code);
-        process.exit(code);
     });
 
     return cli;

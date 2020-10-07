@@ -19,7 +19,7 @@ async function run() {
     const fastlane = `fastlane spaceauth -u ${core.getInput('apple_id')}`;
     console.log(fastlane);
 
-    api(async (setStdin) => {
+    api(async (setStdin, stopListening) => {
       const url = await ngrok.connect(9090);
       core.info(`${styles.cyanBright.open}===> ngrok tunnel is ${url}`);
 
@@ -31,7 +31,10 @@ async function run() {
         process.exit(1);
       }
 
-      const spaceauth = cli(secret);
+      const spaceauth = cli((key) => {
+        stopListening();
+        secret(key);
+      });
       setStdin(spaceauth.stdin);
     });
     
